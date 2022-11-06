@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <header>
+        <h1>Guess the <span>Word Game</span></h1>
+    </header>
+
+    <section>
+        <div class="gameArea">
+            <h3 class="msg"></h3>
+            <input type="text" class="hidden">
+            <button class="btn">CLICK HERE TO START</button>
+            <button class="btn btn-hidden">Another Game</button>
+        </div>
+    </section>
+
+    <script>
+        const btn = document.querySelector('.btn');
+        const inputtype = document.querySelector('.hidden');
+        const msg = document.querySelector('.msg');
+        const hidebtn = document.querySelector('.btn-hidden');
+        let play = false;
+        let newWords;
+        let randWords;
+        const sWords = ["javascript", "python", "php", "c++", "css", "html", "swift", "haskal", "django", "nodejs", "reactjs", "angular", "android", "java", "nextjs", "c#", "sql"];
+
+        const createNewWords = () => {
+            const rand = Math.floor(Math.random() * sWords.length);
+            const orgNo = sWords[rand];
+            // console.log(orgNo);
+            return orgNo;
+        }
+        const createRandWords = (arr) => {
+            for(let i = arr.length-1; i>0;i--){
+                let temp = arr[i];
+                // console.log(temp);
+                let j = Math.floor(Math.random()*(i+1));
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+            return arr
+
+        }
+        btn.addEventListener('click', () => {
+            if (!play) {
+                play = true;
+                inputtype.classList.toggle('hidden')
+                btn.innerText = "GUESS";
+                newWords = createNewWords();
+                randWords = createRandWords(newWords.split(""));
+                // console.log(randWords.join(''));
+                msg.innerHTML = `<h3>   The Scramble Words are  <span>${randWords.join('')} </span></h3>`
+            }
+            else{
+                let tempwords = inputtype.value;
+                if(tempwords.toUpperCase() == newWords.toUpperCase()){
+                    play = false;
+                    msg.innerText = 'CONGRATS! You Guessed it Right.'
+                    // inputtype.disabled = true;
+                    btn.innerText = "START AGAIN"
+                    inputtype.classList.toggle('hidden')
+                    inputtype.value = "";
+                }
+                else{
+                    msg.innerText = "OHO! Guess Again Please the word is "+randWords.join("")
+                }
+            }
+
+        })
+        hidebtn.addEventListener('click' , () => {
+
+
+        })
+
+
+    </script>
+
+</body>
+
+</html>
